@@ -11091,6 +11091,8 @@ h1 {
 
 /*end credits*/
 
+/*Special styling for landing page.*/
+
 .flyingLink {
   text-decoration: none !important;
   font-size: 3em;
@@ -11111,4 +11113,6 @@ h1 {
 .centerName > h1:hover {
   color: whitesmoke !important;
 }
+
+/*end of special styling*/
 
