@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'ArtApp') }}</title>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div id="app" class="DisplayNone">
+    </div>
+
+    <?php
+        $conflu = "container-fluid";
+        //dd(Route::getFacadeRoot()->current()->uri());
+    ?>
+    @if(Route::getFacadeRoot()->current()->uri()=="articles/create")
+        <?php
+        $conflu = "container";
+        ?>
+    @endif
+
+    @include("inc.navbar")
+    <div class="{{$conflu}} mainContainer" style="margin-top: 70px;">
+        @include("inc.messages")
+        @yield('content')
+
+        <?php
+            $mytime = Carbon\Carbon::now();
+        ?>
+        
+        <div class="footer navbar-dark bg-dark" style="z-index: 999;">
+            <p class="mt-1" class="footCompany">© 2017-{{$mytime->format('Y')}} Company Name</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a class="footLinks" href="#">Privacy</a></li>
+                <li class="list-inline-item"><a class="footLinks" href="#">Terms</a></li>
+                <li class="list-inline-item"><a class="footLinks" href="#">Support</a></li>
+            </ul>
+        </div>
+    </div>
+
+<script src="/ckeditor/ckeditor.js"></script>
+<script>
+    if(document.getElementById("ckeditor")){
+        CKEDITOR.replace("ckeditor");
+    }
+</script>
+
+</body>
+</html>
