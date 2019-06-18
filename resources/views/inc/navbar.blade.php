@@ -14,12 +14,14 @@
                 </ul>
 
                 <ul class="navbar-nav ml-auto">
+                    @if(Auth::check())
                         <li class="nav-item">
                             <a class="nav-link" href="/articles"> List Articles </a>
                         </li>
                         <li class="nav-item"> 
                             <a class="nav-link" href="/articles/create"> Create Article </a>
                         </li>
+                    @endif
                     @guest
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
