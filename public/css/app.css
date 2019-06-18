@@ -11116,3 +11116,7 @@ h1 {
 
 /*end of special styling*/
 
+.nextPrev {
+  float: right;
+}
+

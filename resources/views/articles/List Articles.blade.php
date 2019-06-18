@@ -1,13 +1,13 @@
 @extends("layouts.app")
 
 @section("content")
-
+<button onclick="ajax(this)" class="btn btn-info" id="ajax">Ajax</button><br>
     @if(count($articles) > 0)
         <div class="container">
             @foreach ($articles as $article)
                 <div class="row" style="background-color: whitesmoke;">
                     <div class="col-md-4 col-sm-4">
-                        <img class="postCover postCoverIndex" src="/storage/images/{{$article->image}}">
+                        <a href='/articles/{{$article->id}}'><img class="postCover postCoverIndex" src="/storage/images/{{$article->image}}"></a>
                     </div>
                     <div class="col-md-8 col-sm-8">
 
@@ -34,6 +34,13 @@
                 <hr class="hrStyle">
             @endforeach
         </div>
+
+        <div class="d-flex" style="margin: 10px 0px;padding-top: 20px;">
+            <div class="mx-auto" style="line-height: 10px;">
+                {{$articles->links("pagination::bootstrap-4")}}
+            </div>
+        </div>
+
     @endif
 
 @endsection

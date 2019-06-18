@@ -86,7 +86,10 @@ class ArticlesController extends Controller
         $article = Article::find($id);  
         //dd($article);
         //return view("posts.show")->with(compact("jason"));
-        return view("articles.Single Article")->with(compact("article"));
+        $prev = $article->prev($article);
+        $next = $article->next($article);
+        
+        return view("articles.Single Article")->with(compact("article", "prev", "next"));
     }
 
     /**
@@ -97,7 +100,9 @@ class ArticlesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $article = Article::find($id);
+        
+        return view("articles.Update Article")->with(compact("article"));
     }
 
     /**
@@ -109,7 +114,34 @@ class ArticlesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $article = Article::find($id);
+
+        $this->validate($request, [
+            "title" => "required",
+            "body" => "required",
+            "cover_image" => "image|nullable"
+        ]);
+
+        if($request->hasFile("image")){
+            $filenameWithExt = $request->file("image")->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file("image")->getClientOriginalExtension();
+            $fileNameToStore = $filename."_".time().".".$extension;
+            $path = $request->file("image")->storeAs("public/images", $fileNameToStore);
+        }
+
+        //$post = new Post;
+
+        $article->title = $request->input("title");
+        $article->body = $request->input("body");
+
+        if($request->hasFile("image")){
+            $article->image = $fileNameToStore;
+        }
+
+        $article->save();
+
+        return redirect("/articles")->with("success", "Article Updated");
     }
 
     /**
@@ -120,6 +152,26 @@ class ArticlesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $article = Article::find($id);
+        
+        if($article->image!="noimage.jpg"){
+            Storage::delete("public/images/".$article->image);
+        }
+
+        $article->delete();
+        return redirect("/articles")->with("success", "Article removed");
     }
+
+    public function ajax(Request $request)
+    { 
+        $var1 = $request->var1;
+        $var2 = $request->var2;
+        $elem = $request->elem;
+
+        $articles = Article::orderBy("created_at","desc")->paginate(5);
+        //return $request;
+        return response()->json(array("articles"=> $articles,"var1"=> $var1, "var2"=> $var2, "elem"=> $elem), 200);
+        
+    }
+
 }

@@ -11,10 +11,12 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/skripta.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -25,8 +27,9 @@
     <?php
         $conflu = "container-fluid";
         //dd(Route::getFacadeRoot()->current()->uri());
+        //echo Route::getFacadeRoot()->current()->uri();
     ?>
-    @if(Route::getFacadeRoot()->current()->uri()=="articles/create")
+    @if(Route::getFacadeRoot()->current()->uri()=="articles/create" || Route::getFacadeRoot()->current()->uri()=="articles/{article}/edit")
         <?php
         $conflu = "container";
         ?>

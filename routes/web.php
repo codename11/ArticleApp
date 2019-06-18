@@ -22,3 +22,5 @@ Auth::routes();
 Route::get('/', 'PagesController@index');
 
 Route::resource("articles", "ArticlesController");
+
+Route::post('articles', "ArticlesController@ajax");

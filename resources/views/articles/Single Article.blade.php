@@ -2,6 +2,12 @@
 
 @section("content")
 
+        <a href="/articles" class="btn btn-outline-info btn-sm">Go Back</a>
+        <div class="nextPrev">
+            <a href="/articles/{{$prev}}" class="btn btn-outline-success"><i class="fas fa-arrow-left"></i></a>
+            <a href="/articles/{{$next}}" class="btn btn-outline-info"><i class="fas fa-arrow-right"></i></a>
+        </div><br><br>
+
         <div id="single-kv" style="background-image: url('/storage/images/{{$article->image}}'); height: 435px; background-position: center top; background-attachment: fixed; background-repeat: no-repeat;background-size:cover;"></div>
         <div id="single-intro">
             <div id="single-intro-wrap"><h1> {{$article->title}}</h1>
@@ -34,5 +40,46 @@
             </div>
 
         </div>
-        
+
+        <div class="container" style="margin-bottom: 80px;">
+            @if(!Auth::guest())
+                @if(Auth::check() && Auth::user()->id==$article->user->id)
+                <hr>
+                    <a href="/articles/{{$article->id}}/edit" class="btn btn-outline-primary btn-sm">Edit</a>
+
+                    <form action="/articles/{{$article->id}}" method="post" class="float-right">
+                        @csrf
+                        {{method_field("DELETE")}}
+                        
+                        <!-- The Modal -->
+                        <div class="modal" id="myModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                            
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                    <h4 class="modal-title">Are you sure you want to delete this post?</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                            
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                    </div>
+                            
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    </div>
+                            
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                
+                <button class="btn btn-outline-danger btn-sm float-right" data-toggle="modal" data-target="#myModal">Delete</button>
+            @endif
+        @endif
+    </div>
 @endsection

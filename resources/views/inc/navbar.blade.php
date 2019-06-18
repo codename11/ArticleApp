@@ -1,5 +1,5 @@
 <nav id="myNavbar" class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-        <div class="container" style="height: 57px;">
+        <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
                 <img src="{{ asset('images/laravel-logo.png') }}" alt="{{ config('app.name', 'Laravel') }}">
             </a>
@@ -13,7 +13,7 @@
 
                 </ul>
 
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ml-auto" style="padding-left: 0px !important;">
                     @if(Auth::check())
                         <li class="nav-item">
                             <a class="nav-link" href="/articles"> List Articles </a>
