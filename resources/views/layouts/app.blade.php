@@ -12,11 +12,13 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/skripta.js') }}" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -36,7 +38,7 @@
     @endif
 
     @include("inc.navbar")
-    <div class="{{$conflu}} mainContainer" style="margin-top: 70px;">
+    <div class="{{$conflu}} mainContainer" style="margin-top: 70px;" id="maine">
         @include("inc.messages")
         @yield('content')
 
@@ -59,7 +61,20 @@
     if(document.getElementById("ckeditor")){
         CKEDITOR.replace("ckeditor");
     }
-</script>
 
+
+</script>
+<script>
+$(document).ready(function(){
+
+    $(document).on("click", ".pagination a", function(event){
+    event.preventDefault();
+    //alert("ggggg");
+    var page = $(this).attr("href").split("page=")[1];
+    ajaxIndex(page);
+  });
+
+});
+</script>
 </body>
 </html>

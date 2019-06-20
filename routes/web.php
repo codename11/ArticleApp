@@ -21,6 +21,14 @@ Auth::routes();
 
 Route::get('/', 'PagesController@index');
 
-Route::resource("articles", "ArticlesController");
+//Route::resource("/articles", "ArticlesController");
 
-Route::post('articles', "ArticlesController@ajax");
+//Route::get("/articles", "ArticlesController@index");
+Route::get('/articles', "ArticlesController@index");
+Route::get('/articles/ajaxIndex', "ArticlesController@ajaxIndex");
+Route::post("/articles", "ArticlesController@store");
+Route::post("/articles/create", "ArticlesController@create");
+Route::post("/articles/{article}", "ArticlesController@update");
+Route::get("/articles/{article}", "ArticlesController@show");
+Route::post("/articles/{article}", "ArticlesController@destroy");
+Route::get("/articles/{article}/edit", "ArticlesController@edit");
