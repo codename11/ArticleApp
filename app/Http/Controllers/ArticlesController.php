@@ -61,12 +61,15 @@ class ArticlesController extends Controller
     public function ajaks(Request $request){
         
         if($request->ajax()){
-            $articles = Article::paginate(2);
+            $articles = Article::with('user')->paginate(1);
             /*Response koji se šalje sa servera ukoliko je uspešna pretraga.*/
+
             $response = array(
                 'status' => 'success',
                 'msg' => "Hello!",
                 "articles" => $articles,
+                "request" => $request->all(),  
+                'pagination'=>(string) $articles->links(),
             );
             
             return response()->json($response);

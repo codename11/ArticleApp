@@ -90,55 +90,52 @@ function ajaxIndex(page){
   
 }
 
-function ajaks(/*par*/){
+function ajaks(page){
     let token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
     console.log("hit");
+    console.log(page);
+
     $.ajax({
-        /* the route pointing to the post function */
         url: '/postajax',
         type: 'POST',
-        /* send the csrf-token and the input to the controller */
-        data: {_token: token /*, message:par*/},
+        data: {_token: token , message: "bravo", page: page && parseInt(page) && parseInt(page) > 0  ? page : 1},
         dataType: 'JSON',
-        /* remind that 'data' is the response of the AjaxController */
         success: (response) => { 
             console.log("success");
-            console.log(response.msg);
-            console.log(response.msg);
-            console.log(response.articles);
-            let html = "<ul class='pagination' role='navigation'>";
+            console.log(response);
+            let body = "";
+            let html = "<div class='container'>";
+            
+            let len = response.articles.data.length;
+            for(let i=0;i<len;i++){
 
-            if(response.articles.prev_page_url){
-                html += "<li class='page-item'><a class='page-link' href='"+response.articles.prev_page_url+"' rel='prev' aria-label='« Previous'>‹</a></li>";
-            }
-            else{
-                html += "<li class='page-item disabled' aria-disabled='true' aria-label='« Previous'><span class='page-link' aria-hidden='true'>‹</span></li>";
-            }
-
-            for(let i=0;i<response.articles.total;i++){
-                
-                if((i+1)==response.articles.current_page){
-                    html += "<li class='page-item active' aria-current='page'><span class='page-link'>"+response.articles.current_page+"</span></li>";
+                html += "<div class='row' style='background-color: whitesmoke;'><div class='col-md-4 col-sm-4'><a href='/articles/"+response.articles.data[i].id+"'><img class='postCover postCoverIndex' src='/storage/images/"+response.articles.data[i].image+"'></a></div><div class='col-md-8 col-sm-8'><br>";
+            
+                if(response.articles.data[i].body.length > 400){
+                    body = response.articles.data[i].body.substring(0, 400)+"<a href='/articles/"+response.articles.data[i].id+"'>...Read more</a>";
                 }
                 else{
-                    html += "<li class='page-item'><a class='page-link' href='http://articleapp.test/articles/postajax?page="+(i+1)+"'>"+(i+1)+"</a></li>";
+                    body = response.articles.data[i].body;
                 }
-
-            }
-            
-            if(response.articles.next_page_url){
-                html += "<li class='page-item'><a class='page-link' href='"+response.articles.next_page_url+"' rel='prev' aria-label='« Previous'>‹</a></li>";
-            }
-            else{
-                html += "<li class='page-item disabled' aria-disabled='true' aria-label='Next »'><span class='page-link' aria-hidden='true'>›</span></li>";
-            }
-
-            html += "</ul>"
-            if(document.getElementById("msg")){
                 
-                document.getElementById("msg").innerHTML = html;
+                html += "<p>"+body+"</p>";
+                html += "<small class='timestamp'>Written on "+response.articles.data[i].created_at+" by "+response.articles.data[i].user.name+"</small></div></div><hr class='hrStyle'>";
             }
+
+            let pagination = "<div class='container'><ul class='pagination justify-content-center'><li class='page-item'><a class='page-link' href='#'>Previous</a></li>";
+            for(let i=0;i<response.articles.last_page;i++){
+                pagination += "<li class='page-item'><a class='page-link' href='#'>"+(i+1)+"</a></li>";
+            }
+            pagination += "<li class='page-item'><a class='page-link' href='#'>Next</a></li></ul></div>";
             
+            
+            //console.log(pagination);
+            html += "</div>";
+            
+            if(document.getElementById("maine")){
+                    
+                    document.getElementById("maine").innerHTML = html+response.pagination;
+            }
         },
         error: (response) => {
             console.log("error");

@@ -141,6 +141,7 @@ img {
 }
 
 .postCoverIndex{
+	height: 250px !important;
     width: 100%;
     box-shadow: none; 
 }
@@ -381,4 +382,8 @@ h1 {
 
 .nextPrev{
     float:right;
+}
+
+#maine > ul.pagination{
+	justify-content: center;
 }

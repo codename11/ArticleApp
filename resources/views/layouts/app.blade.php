@@ -64,18 +64,42 @@
 
 
 </script>
+<?php
+if(Route::getFacadeRoot()->current()->uri()=="ajax"){
+?>
+<script>
+    $(document).ready(function(){
+        
+        $(document).on("click", ".pagination a", function(event){
+            var page = $(this).attr("href").split("page=")[1];
+            //var page = $(this).html();
+            event.preventDefault();
+            
+            ajaks(page);
+
+        });
+
+        ajaks();
+
+    });
+</script>
+<?php
+}
+?>
+
 <script>
 $(document).ready(function(){
-
+/*
     $(document).on("click", ".pagination a", function(event){
-    event.preventDefault();
-    //alert("ggggg");
-    var page = $(this).attr("href").split("page=")[1];
-    //ajaxIndex(page);
+        
+        event.preventDefault();
+        //alert("ggggg");
+        var page = $(this).attr("href").split("page=")[1];
+        //ajaxIndex(page);
     
-  });
+    });*/
 
-  ajaks();
+  
 
 });
 
