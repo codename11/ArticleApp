@@ -31,8 +31,8 @@
             @endforeach
         </div>
 
-        <div class="d-flex" style="margin: 10px 0px;padding-top: 20px;">
-            <div class="mx-auto" style="line-height: 10px;" id="linkParent">
+        <div class="d-flex" style="margin: 10px 0px;padding-top: 20px;" id="linkParent">
+            <div class="mx-auto" style="line-height: 10px;">
                 {{$articles->links("pagination::bootstrap-4")}}
             </div>
         </div>

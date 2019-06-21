@@ -12,8 +12,8 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/skripta.js') }}" defer></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -71,10 +71,15 @@ $(document).ready(function(){
     event.preventDefault();
     //alert("ggggg");
     var page = $(this).attr("href").split("page=")[1];
-    ajaxIndex(page);
+    //ajaxIndex(page);
+    
   });
 
+  ajaks();
+
 });
+
 </script>
+
 </body>
 </html>

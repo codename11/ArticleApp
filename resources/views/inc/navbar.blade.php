@@ -21,6 +21,9 @@
                         <li class="nav-item"> 
                             <a class="nav-link" href="/articles/create"> Create Article </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/ajax"> Ajax </a>
+                        </li>
                     @endif
                     @guest
                         <li class="nav-item">

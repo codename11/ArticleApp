@@ -20,15 +20,13 @@ Auth::routes();
 //Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/', 'PagesController@index');
+//Route::get('/articles/ajaxIndex', "ArticlesController@ajaxIndex");
+Route::resource("/articles", "ArticlesController");
 
-//Route::resource("/articles", "ArticlesController");
+//Begin: Rute za Ajax
+Route::get('/ajax', function(){ 
+    return view('message'); 
+});
 
-//Route::get("/articles", "ArticlesController@index");
-Route::get('/articles', "ArticlesController@index");
-Route::get('/articles/ajaxIndex', "ArticlesController@ajaxIndex");
-Route::post("/articles", "ArticlesController@store");
-Route::post("/articles/create", "ArticlesController@create");
-Route::post("/articles/{article}", "ArticlesController@update");
-Route::get("/articles/{article}", "ArticlesController@show");
-Route::post("/articles/{article}", "ArticlesController@destroy");
-Route::get("/articles/{article}/edit", "ArticlesController@edit");
+Route::post('/postajax','ArticlesController@ajaks');
+//End: Rute za Ajax

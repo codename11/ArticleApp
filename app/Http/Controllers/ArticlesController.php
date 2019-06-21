@@ -27,21 +27,21 @@ class ArticlesController extends Controller
     {
         //dump(Route::getFacadeRoot()->current()->uri());
         //$articles = Article::orderBy("created_at","desc")->paginate(1);
-        $articles = Article::paginate(1);
-        $articlesAll = Article::all();
+        $articles = Article::paginate(2);
+        
         //dd($articles);
         
-        return view("articles.List Articles")->with(compact("articles", "articlesAll"));
+        return view("articles.List Articles")->with(compact("articles"));
     }
 
-    public function ajaxIndex(Request $request)
+    /*public function ajaxIndex(Request $request)
     { 
 
         if($request->ajax()){
             
             $articles = Article::paginate(1);
-            $articlesAll = Article::all();
-            return view('inc.part')->with(compact("articles", "articlesAll"))->render();
+            
+            return view('inc.part')->with(compact("articles"))->render();
         }
         /*$var1 = $request->var1;
         $var2 = $request->var2;
@@ -56,7 +56,24 @@ class ArticlesController extends Controller
         return response()->json(["articles" => $html, "currUri" => $currUri, "articlesAll" => $articlesAll], 200);*/
         //return response()->json(["success"=> $articles,"var1"=> $var1, "var2"=> $var2, "elem"=> $elem, "currUser" => $currUser, "currUri" => $currUri], 200);
         
-    }
+    //}
+
+    public function ajaks(Request $request){
+        
+        if($request->ajax()){
+            $articles = Article::paginate(2);
+            /*Response koji se šalje sa servera ukoliko je uspešna pretraga.*/
+            $response = array(
+                'status' => 'success',
+                'msg' => "Hello!",
+                "articles" => $articles,
+            );
+            
+            return response()->json($response);
+            
+        }
+         
+   }
 
     /**
      * Show the form for creating a new resource.
