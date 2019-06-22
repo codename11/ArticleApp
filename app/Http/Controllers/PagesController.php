@@ -26,4 +26,9 @@ class PagesController extends Controller
     {
         return view('pages.index');
     }
+
+    public function ListArticles()
+    {
+        return view('articles.List Articles');
+    }
 }

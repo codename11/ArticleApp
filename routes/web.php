@@ -24,9 +24,10 @@ Route::get('/', 'PagesController@index');
 Route::resource("/articles", "ArticlesController");
 
 //Begin: Rute za Ajax listing.
-Route::get('/list', function(){ 
+Route::get('/list', 'PagesController@ListArticles');
+/*Route::get('/list', function(){ 
     return view('articles.List Articles'); 
-});
+});*/
 
 Route::post('/indexAjax','ArticlesController@ajaxIndex');
 //End: Rute za Ajax listing.
