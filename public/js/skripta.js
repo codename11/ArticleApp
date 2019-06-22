@@ -96,7 +96,7 @@ function ajaks(page){
     console.log(page);
 
     $.ajax({
-        url: '/postajax',
+        url: '/indexAjax',
         type: 'POST',
         data: {_token: token , message: "bravo", page: page && parseInt(page) && parseInt(page) > 0  ? page : 1},
         dataType: 'JSON',

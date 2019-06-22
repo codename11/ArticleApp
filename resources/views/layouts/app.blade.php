@@ -23,17 +23,14 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app" class="DisplayNone">
-    </div>
+    <div id="app" class="DisplayNone"></div>
 
     <?php
         $conflu = "container-fluid";
-        //dd(Route::getFacadeRoot()->current()->uri());
-        //echo Route::getFacadeRoot()->current()->uri();
     ?>
     @if(Route::getFacadeRoot()->current()->uri()=="articles/create" || Route::getFacadeRoot()->current()->uri()=="articles/{article}/edit")
         <?php
-        $conflu = "container";
+            $conflu = "container";
         ?>
     @endif
 
@@ -61,18 +58,17 @@
     if(document.getElementById("ckeditor")){
         CKEDITOR.replace("ckeditor");
     }
-
-
 </script>
+
 <?php
-if(Route::getFacadeRoot()->current()->uri()=="ajax"){
+if(Route::getFacadeRoot()->current()->uri()=="list"){
 ?>
 <script>
     $(document).ready(function(){
         
         $(document).on("click", ".pagination a", function(event){
-            var page = $(this).attr("href").split("page=")[1];
-            //var page = $(this).html();
+            let page = $(this).attr("href").split("page=")[1];
+            //let page = $(this).html();
             event.preventDefault();
             
             ajaks(page);
@@ -86,24 +82,6 @@ if(Route::getFacadeRoot()->current()->uri()=="ajax"){
 <?php
 }
 ?>
-
-<script>
-$(document).ready(function(){
-/*
-    $(document).on("click", ".pagination a", function(event){
-        
-        event.preventDefault();
-        //alert("ggggg");
-        var page = $(this).attr("href").split("page=")[1];
-        //ajaxIndex(page);
-    
-    });*/
-
-  
-
-});
-
-</script>
 
 </body>
 </html>

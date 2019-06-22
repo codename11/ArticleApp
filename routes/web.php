@@ -23,10 +23,10 @@ Route::get('/', 'PagesController@index');
 //Route::get('/articles/ajaxIndex', "ArticlesController@ajaxIndex");
 Route::resource("/articles", "ArticlesController");
 
-//Begin: Rute za Ajax
-Route::get('/ajax', function(){ 
-    return view('message'); 
+//Begin: Rute za Ajax listing.
+Route::get('/list', function(){ 
+    return view('articles.List Articles'); 
 });
 
-Route::post('/postajax','ArticlesController@ajaks');
-//End: Rute za Ajax
+Route::post('/indexAjax','ArticlesController@ajaxIndex');
+//End: Rute za Ajax listing.

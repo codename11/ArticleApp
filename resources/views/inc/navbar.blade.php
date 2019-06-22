@@ -16,14 +16,12 @@
                 <ul class="navbar-nav ml-auto" style="padding-left: 0px !important;">
                     @if(Auth::check())
                         <li class="nav-item">
-                            <a class="nav-link" href="/articles"> List Articles </a>
+                            <a class="nav-link" href="/list"> List Articles </a>
                         </li>
                         <li class="nav-item"> 
                             <a class="nav-link" href="/articles/create"> Create Article </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/ajax"> Ajax </a>
-                        </li>
+                        
                     @endif
                     @guest
                         <li class="nav-item">

@@ -25,44 +25,17 @@ class ArticlesController extends Controller
 
     public function index()
     {
-        //dump(Route::getFacadeRoot()->current()->uri());
-        //$articles = Article::orderBy("created_at","desc")->paginate(1);
+
         $articles = Article::paginate(2);
-        
-        //dd($articles);
-        
+
         return view("articles.List Articles")->with(compact("articles"));
     }
 
-    /*public function ajaxIndex(Request $request)
-    { 
-
-        if($request->ajax()){
-            
-            $articles = Article::paginate(1);
-            
-            return view('inc.part')->with(compact("articles"))->render();
-        }
-        /*$var1 = $request->var1;
-        $var2 = $request->var2;
-        $elem = $request->elem;
-        $currUser = auth()->user();
-        $currUri = Route::getFacadeRoot()->current()->uri();
-        $articles = Article::paginate(1);
-        $articlesAll = Article::all();
-        $html = view('inc.part')->with(compact("articles"))->render();
-        //return $request;
-        
-        return response()->json(["articles" => $html, "currUri" => $currUri, "articlesAll" => $articlesAll], 200);*/
-        //return response()->json(["success"=> $articles,"var1"=> $var1, "var2"=> $var2, "elem"=> $elem, "currUser" => $currUser, "currUri" => $currUri], 200);
-        
-    //}
-
-    public function ajaks(Request $request){
+    public function ajaxIndex(Request $request){
         
         if($request->ajax()){
             $articles = Article::with('user')->paginate(1);
-            /*Response koji se šalje sa servera ukoliko je uspešna pretraga.*/
+            /*Response koji se šalje sa servera ukoliko je uspešan response.*/
 
             $response = array(
                 'status' => 'success',
@@ -85,7 +58,6 @@ class ArticlesController extends Controller
      */
     public function create()
     {
-        //dump(Route::getFacadeRoot()->current()->uri());
         return view("articles.Create Article");
     }
 
@@ -97,13 +69,12 @@ class ArticlesController extends Controller
      */
     public function store(Request $request)
     {
-        //dump(Route::getFacadeRoot()->current()->uri());
         $this->validate($request, [
             "title" => "required|min:4|max:12",
             "body" => "required",
             "image" => "image|nullable"
         ]);
-        //dd($request["title"],$request["body"],$request["image"]);
+        
         if($request->hasFile("image")){
             $filenameWithExt = $request->file("image")->getClientOriginalName();
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
@@ -133,12 +104,8 @@ class ArticlesController extends Controller
      */
     public function show($id)
     {
-        //dd($id);
-        //dump(Route::getFacadeRoot()->current()->uri());
+
         $article = Article::find($id);  
-        //dd($article);
-        //dd($article);
-        //return view("posts.show")->with(compact("jason"));
         $prev = $article->prev($article);
         $next = $article->next($article);
         
@@ -153,7 +120,6 @@ class ArticlesController extends Controller
      */
     public function edit($id)
     {
-        //dump(Route::getFacadeRoot()->current()->uri());
         $article = Article::find($id);
         
         return view("articles.Update Article")->with(compact("article"));
@@ -168,7 +134,6 @@ class ArticlesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //dump(Route::getFacadeRoot()->current()->uri());
         $article = Article::find($id);
 
         $this->validate($request, [
@@ -184,8 +149,6 @@ class ArticlesController extends Controller
             $fileNameToStore = $filename."_".time().".".$extension;
             $path = $request->file("image")->storeAs("public/images", $fileNameToStore);
         }
-
-        //$post = new Post;
 
         $article->title = $request->input("title");
         $article->body = $request->input("body");
@@ -207,7 +170,6 @@ class ArticlesController extends Controller
      */
     public function destroy($id)
     {
-        //dump(Route::getFacadeRoot()->current()->uri());
         $article = Article::find($id);
         
         if($article->image!="noimage.jpg"){
