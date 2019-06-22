@@ -2,7 +2,7 @@
 
 @section("content")
 
-        <a href="/articles" class="btn btn-outline-info btn-sm">Go Back</a>
+        <a href="{{ url()->previous() }}" class="btn btn-outline-info btn-sm">Go Back</a>
         <div class="nextPrev">
             <a href="/articles/{{$prev}}" class="btn btn-outline-success"><i class="fas fa-arrow-left"></i></a>
             <a href="/articles/{{$next}}" class="btn btn-outline-info"><i class="fas fa-arrow-right"></i></a>
