@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Article;
+use DB;
+use Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Route;
 
 class PagesController extends Controller
 {
@@ -30,5 +36,11 @@ class PagesController extends Controller
     public function ListArticles()
     {
         return view('articles.List Articles');
+    }
+
+    public function ShowArticle($id)
+    {
+        //dd($id);
+        return view('articles.Single Article');
     }
 }

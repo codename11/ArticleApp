@@ -90,7 +90,7 @@ function ajaxIndex(page){
   
 }
 
-function ajaks(page){
+function ajaksIndex(page){
     let token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
     console.log("hit");
     console.log(page);
@@ -100,6 +100,7 @@ function ajaks(page){
         type: 'POST',
         data: {_token: token , message: "bravo", page: page && parseInt(page) && parseInt(page) > 0  ? page : 1},
         dataType: 'JSON',
+
         success: (response) => { 
             console.log("success");
             console.log(response);
@@ -109,10 +110,10 @@ function ajaks(page){
             let len = response.articles.data.length;
             for(let i=0;i<len;i++){
 
-                html += "<div class='row' style='background-color: whitesmoke;'><div class='col-md-4 col-sm-4'><a href='/articles/"+response.articles.data[i].id+"'><img class='postCover postCoverIndex' src='/storage/images/"+response.articles.data[i].image+"'></a></div><div class='col-md-8 col-sm-8'><br>";
+                html += "<div class='row' style='background-color: whitesmoke;'><div class='col-md-4 col-sm-4'><a href='/list/"+response.articles.data[i].id+"'><img class='postCover postCoverIndex' src='/storage/images/"+response.articles.data[i].image+"'></a></div><div class='col-md-8 col-sm-8'><br>";
             
                 if(response.articles.data[i].body.length > 400){
-                    body = response.articles.data[i].body.substring(0, 400)+"<a href='/articles/"+response.articles.data[i].id+"'>...Read more</a>";
+                    body = response.articles.data[i].body.substring(0, 400)+"<a href='/list/"+response.articles.data[i].id+"'>...Read more</a>";
                 }
                 else{
                     body = response.articles.data[i].body;
@@ -136,6 +137,61 @@ function ajaks(page){
                     
                     document.getElementById("maine").innerHTML = html+response.pagination;
             }
+        },
+        error: (response) => {
+            console.log("error");
+            console.log(response);
+        }
+    }); 
+    
+}
+
+function ajaksShow(){
+    let token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+    console.log("hit");
+    //var n = str.lastIndexOf("planet");
+    let urlId = window.location.href;
+    let getaArticleId = urlId.lastIndexOf("/");
+    let articleId = urlId.substring(getaArticleId+1, urlId.length);
+    console.log(articleId);
+
+    $.ajax({
+        url: '/showAjax',
+        type: 'POST',
+        data: {_token: token , message: "bravo", articleId: articleId},
+        dataType: 'JSON',
+        success: (response) => { 
+            console.log("success");
+            console.log(response);
+            let body = "";
+            let imageStyle = ";height: 435px; background-position: center top; background-attachment: fixed; background-repeat: no-repeat;background-size:cover;";
+
+            let img = response.article.image;
+            let find = " ";
+            let rep = new RegExp(find, 'g');
+            img = img.replace(rep, "%20");
+            
+            let imageUrl = "/storage/images/"+img;
+            let html = "<a href='/list' class='btn btn-outline-info btn-sm'>Go Back</a><div class='nextPrev'><a href='/list/"+response.prev+"' class='btn btn-outline-success'><i class='fas fa-arrow-left'></i></a><a href='/list/"+response.prev+"' class='btn btn-outline-info'><i class='fas fa-arrow-right'></i></a></div><br><br><div id='single-kv' style='background-image: url("+imageUrl+")"+imageStyle+";background-color: red !important;'></div><div id='single-intro'><div id='single-intro-wrap'><h1> "+response.article.title+"</h1>";
+            
+                if(response.article.body.length > 400){
+                    body = response.article.body.substring(0, 400)+"<a href='/list/"+response.article.id+"'>...Read more</a>";
+                }
+                else{
+                    body = response.article.body;
+                }
+           
+                html += body;
+
+                html += "<div class='comment-time excerpt-details' style='margin-bottom: 20px; font-size: 14px;'><a href='#gotoprofil'> "+response.user.name+" </a> - "+response.article.created_at+"</div></div></div><hr style='color:whitesmoke; width: 50%;'><div id='single-body'><div id='single-content'>"+response.article.body+"</div></div>";
+                    
+
+            if(document.getElementById("maine")){
+                    
+                document.getElementById("maine").innerHTML = html;
+
+            }
+            
         },
         error: (response) => {
             console.log("error");

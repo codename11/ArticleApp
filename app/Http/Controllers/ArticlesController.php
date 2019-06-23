@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\User;
 use App\Article;
@@ -110,6 +109,43 @@ class ArticlesController extends Controller
         $next = $article->next($article);
         
         return view("articles.Single Article")->with(compact("article", "prev", "next"));
+    }
+
+    public function ajaxShow(Request $request)
+    {
+        if($request->ajax()){
+
+            $article = Article::find($request->articleId);  
+            $allArticleIds = Article::pluck('id');
+            $user = User::find($article->user_id);
+            $prev = $article->prev($article);
+            $next = $article->next($article);
+            
+            /*Response koji se šalje sa servera ukoliko je uspešan response.*/
+            
+            $response = array(
+                "status" => "success",
+                "msg" => "Hello!",
+                "article" => [
+                    "id" => $article->id,
+                    "title" => $article->title,
+                    "body" => $article->body,
+                    "image" => $article->image,
+                    "created_at" => $article->created_at->format('d. M, Y'),
+                    "updated_at" => $article->updated_at,
+                    "user_id" => $article->user_id,
+                ],  
+                "prev" => $prev,
+                "next" => $next,
+                "request" => $request->all(),
+                "allArticleIds" => $allArticleIds,
+                "user" => $user,
+            );
+            
+            return response()->json($response);
+            
+        }
+
     }
 
     /**

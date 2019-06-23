@@ -31,3 +31,9 @@ Route::get('/list', 'PagesController@ListArticles');
 
 Route::post('/indexAjax','ArticlesController@ajaxIndex');
 //End: Rute za Ajax listing.
+
+//Begin: Rute za Ajax show.
+Route::get('/list/{id}', 'PagesController@ShowArticle');
+
+Route::post('/showAjax','ArticlesController@ajaxShow');
+//End: Rute za Ajax show.

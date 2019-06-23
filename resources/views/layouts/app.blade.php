@@ -35,10 +35,10 @@
     @endif
 
     @include("inc.navbar")
-    <div class="{{$conflu}} mainContainer" style="margin-top: 70px;" id="maine">
+    <div class="{{$conflu}} mainContainer" style="margin-top: 70px;">
         @include("inc.messages")
         @yield('content')
-
+        <div  id="maine"></div>
         <?php
             $mytime = Carbon\Carbon::now();
         ?>
@@ -71,16 +71,31 @@ if(Route::getFacadeRoot()->current()->uri()=="list"){
             //let page = $(this).html();
             event.preventDefault();
             
-            ajaks(page);
+            ajaksIndex(page);
 
         });
 
-        ajaks();
+        ajaksIndex();
 
     });
 </script>
 <?php
 }
+?>
+<?php
+if(Route::getFacadeRoot()->current()->uri()=="list/{id}"){
+?>
+    <script>
+        
+        $(document).ready(function(){
+    
+            ajaksShow();
+        });
+
+    </script>
+    
+<?php
+    }
 ?>
 
 </body>
