@@ -169,13 +169,13 @@ function ajaksShow(){
             let img = response.article.image;
             let find = " ";
             let rep = new RegExp(find, 'g');
-            img = img.replace(rep, "%20");
-            
+            img = img.replace(rep, "%20"); // class="alert alert-danger"
+            let mymodalDelete = "<div class='modal' id='myModalDelete'><div class='modal-dialog'><div class='modal-content'><div class='modal-header'><h4 class='modal-title'>Do you really want to delete this article?</h4><button type='button' class='close' data-dismiss='modal'>&times;</button></div><div class='modal-body'>deleting ...</div><div class='modal-footer'><button class='btn btn-outline-danger' style='position: absolute;left:0px; margin-left: 1rem;' onclick='ajaksDelete(this)'>Delete</button><button type='button' class='btn btn-danger' data-dismiss='modal'>Close</button></div></div></div></div>";
             let imageUrl = "/storage/images/"+img;
-            let html = "<a href='/list' class='btn btn-outline-info btn-sm'>Go Back</a><div class='nextPrev'><a href='/list/"+response.prev+"' class='btn btn-outline-success'><i class='fas fa-arrow-left'></i></a><a href='/list/"+response.prev+"' class='btn btn-outline-info'><i class='fas fa-arrow-right'></i></a></div><br><br><div id='single-kv' style='background-image: url("+imageUrl+")"+imageStyle+";background-color: red !important;'></div><div id='single-intro'><div id='single-intro-wrap'><h1> "+response.article.title+"</h1>";
+            let html = "<a href='/list' class='btn btn-outline-info btn-sm'>Go Back</a><div class='nextPrev'><a href='/list/"+response.prev+"' class='btn btn-outline-success'><i class='fas fa-arrow-left'></i></a><a href='/list/"+response.next+"' class='btn btn-outline-info'><i class='fas fa-arrow-right'></i></a></div><br><br><div id='single-kv' style='background-image: url("+imageUrl+")"+imageStyle+";background-color: red !important;'></div><div id='single-intro'><div id='single-intro-wrap'><h1> "+response.article.title+"</h1>";
             
                 if(response.article.body.length > 400){
-                    body = response.article.body.substring(0, 400)+"<a href='/list/"+response.article.id+"'>...Read more</a>";
+                    body = response.article.body.substring(0, 400)+"<a id='readMore' href='/list/"+response.article.id+"'>...Read more</a>";
                 }
                 else{
                     body = response.article.body;
@@ -183,7 +183,7 @@ function ajaksShow(){
            
                 html += body;
 
-                html += "<div class='comment-time excerpt-details' style='margin-bottom: 20px; font-size: 14px;'><a href='#gotoprofil'> "+response.user.name+" </a> - "+response.article.created_at+"</div></div></div><hr style='color:whitesmoke; width: 50%;'><div id='single-body'><div id='single-content'>"+response.article.body+"</div></div>";
+                html += "<div class='comment-time excerpt-details' style='margin-bottom: 20px; font-size: 14px;'><a href='#gotoprofil'> "+response.user.name+" </a> - "+response.article.created_at+"</div><button onclick='alert()' class='btn btn-outline-info btn-sm float-left'>Update</button><button class='btn btn-outline-danger btn-sm float-right' data-toggle='modal' data-target='#myModalDelete'>Delete</button></div></div><br><hr style='color:whitesmoke; width: 50%;'><div id='single-body'><div id='single-content'>"+response.article.body+"</div></div>mymodalDelete"+mymodalDelete;
                     
 
             if(document.getElementById("maine")){
@@ -192,6 +192,33 @@ function ajaksShow(){
 
             }
             
+        },
+        error: (response) => {
+            console.log("error");
+            console.log(response);
+        }
+    }); 
+    
+}
+
+function ajaksDelete(){
+    let token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+    console.log("hitDel");
+    console.log(token);
+
+    let urlId = window.location.href;
+    let getaArticleId = urlId.lastIndexOf("/");
+    let articleId = urlId.substring(getaArticleId+1, urlId.length);
+    console.log(articleId);
+    $.ajax({
+        url: '/deleteAjax/'+articleId,
+        type: 'POST',
+        data: {_token: token , message: "bravo", articleId: articleId},
+        dataType: 'JSON',
+        success: (response) => { 
+            console.log("success");
+            console.log(response);
+            window.location.href = "/list";
         },
         error: (response) => {
             console.log("error");

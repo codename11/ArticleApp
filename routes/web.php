@@ -37,3 +37,9 @@ Route::get('/list/{id}', 'PagesController@ShowArticle');
 
 Route::post('/showAjax','ArticlesController@ajaxShow');
 //End: Rute za Ajax show.
+
+//Begin: Rute za Ajax delete.
+//Route::get('/list/{id}', 'PagesController@DeleteArticle');
+
+Route::post('/deleteAjax/{id}','ArticlesController@ajaxDestroy');
+//End: Rute za Ajax delete.

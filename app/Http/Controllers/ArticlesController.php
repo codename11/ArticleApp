@@ -216,4 +216,27 @@ class ArticlesController extends Controller
         return redirect("/articles")->with("success", "Article removed");
     }
 
+    public function ajaxDestroy(Request $request)
+    {
+        $article = Article::find($request->id);
+        
+        if($article->image!="noimage.jpg"){
+            Storage::delete("public/images/".$article->image);
+        }
+
+        $article->delete();
+        if($request->ajax()){
+            //dd($request);
+            $response = array(
+                'status' => 'success',
+                'msg' => "Hello!",
+                "request" => $request->all(),
+                "rqId" => $request->id,
+            );
+            return response()->json($response);
+            
+        }
+        //return redirect("/list")->with("success", "Article removed");
+        
+    }
 }
