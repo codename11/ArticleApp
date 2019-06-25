@@ -242,7 +242,7 @@ function ajaksUpdate(){
     let urlId = window.location.href;
     let getaArticleId = urlId.lastIndexOf("/");
     let articleId = urlId.substring(getaArticleId+1, urlId.length);
-
+/*
     let updateFormElements = {};
     updateFormElements.title = updateForm.elements[3].value;
     updateFormElements.body = CKEDITOR.instances.ckeditor.getData();//Ovo trece po redu je id polja sa ckeditorom.
@@ -262,13 +262,19 @@ function ajaksUpdate(){
     }
     console.log("======");
     console.log(imginp[0]);
-    
+    */
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    });
+
     $.ajax({
 
         url: '/updateAjax/'+articleId,
         enctype: 'multipart/form-data',
         type: 'POST',
-        data: {_token: token , message: "bravo", articleId: articleId, title: updateFormElements.title, body: updateFormElements.body, myData: imginp[0]},
+        data: {_token: token , message: "bravo", articleId: articleId, title: updateForm.elements[3].value, body: CKEDITOR.instances.ckeditor.getData(), img: updateForm.elements[5].files[0]},
         dataType: 'JSON',
         /*cache: false,
         contentType: false,

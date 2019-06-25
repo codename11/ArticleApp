@@ -243,7 +243,7 @@ class ArticlesController extends Controller
 
     public function ajaxUpdate(Request $request)
     {
-        
+         return $request;
         if($request->ajax()){
             
             $article = Article::find($request->articleId);
@@ -251,9 +251,9 @@ class ArticlesController extends Controller
             $validator = \Validator::make($request->all(), [
                 "title" => "required",
                 "body" => "required",
-                /*'image' => 'image|nullable|max:1999'*/
+                'image' => 'image|nullable|max:1999'
             ]);
-
+           
             if ($validator->passes()){
                 $hasImage = false;
                 //Handle file upload
@@ -274,7 +274,6 @@ class ArticlesController extends Controller
                 $article->image = $fileNameToStore;
                 $article->save();
 
-                
                 $response = array(
                     'status' => 'success',
                     'msg' => "Hello!",
