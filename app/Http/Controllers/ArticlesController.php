@@ -9,6 +9,7 @@ use Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class ArticlesController extends Controller
 {
@@ -243,7 +244,7 @@ class ArticlesController extends Controller
 
     public function ajaxUpdate(Request $request)
     {
-         return $request;
+
         if($request->ajax()){
             
             $article = Article::find($request->articleId);

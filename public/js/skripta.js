@@ -242,18 +242,21 @@ function ajaksUpdate(){
     let urlId = window.location.href;
     let getaArticleId = urlId.lastIndexOf("/");
     let articleId = urlId.substring(getaArticleId+1, urlId.length);
-/*
+
     let updateFormElements = {};
     updateFormElements.title = updateForm.elements[3].value;
     updateFormElements.body = CKEDITOR.instances.ckeditor.getData();//Ovo trece po redu je id polja sa ckeditorom.
     updateFormElements.image = updateForm.elements[5].files[0];
+    
     let imginp = document.getElementById("imagex").files;
     //console.log(imginp);
-    //console.log();
+
     var myformData = new FormData();        
     myformData.append('title', updateFormElements.title);
     myformData.append('body', updateFormElements.body);
-    myformData.append('image', imginp[0]);
+    myformData.append('image', updateFormElements.image);
+    myformData.append('_token', token);
+    myformData.append('articleId', articleId);
     //let formData = $('#updateForm').serializeArray();
     
     console.log("******");
@@ -261,24 +264,17 @@ function ajaksUpdate(){
         console.log(key, value);
     }
     console.log("======");
-    console.log(imginp[0]);
-    */
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': token
-        }
-    });
 
     $.ajax({
 
         url: '/updateAjax/'+articleId,
         enctype: 'multipart/form-data',
         type: 'POST',
-        data: {_token: token , message: "bravo", articleId: articleId, title: updateForm.elements[3].value, body: CKEDITOR.instances.ckeditor.getData(), img: updateForm.elements[5].files[0]},
+        data: myformData,
         dataType: 'JSON',
-        /*cache: false,
+        cache: false,
         contentType: false,
-        processData: false,*/
+        processData: false,
         success: (response) => { 
             console.log("success");
             console.log(response);
