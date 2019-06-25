@@ -53,13 +53,6 @@
         </div>
     </div>
 
-<script src="/ckeditor/ckeditor.js"></script>
-<script>
-    if(document.getElementById("ckeditor")){
-        CKEDITOR.replace("ckeditor");
-    }
-</script>
-
 <?php
 if(Route::getFacadeRoot()->current()->uri()=="list"){
 ?>
@@ -70,7 +63,6 @@ if(Route::getFacadeRoot()->current()->uri()=="list"){
             let page = $(this).attr("href").split("page=")[1];
             //let page = $(this).html();
             event.preventDefault();
-            
             ajaksIndex(page);
 
         });
@@ -97,6 +89,13 @@ if(Route::getFacadeRoot()->current()->uri()=="list/{id}"){
 <?php
     }
 ?>
+
+<script src="/ckeditor/ckeditor.js"></script>
+<script>
+    if(document.getElementById("ckeditor")){
+        CKEDITOR.replace("ckeditor");
+    }
+</script>
 
 </body>
 </html>

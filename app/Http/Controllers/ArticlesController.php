@@ -8,6 +8,7 @@ use DB;
 use Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 
 class ArticlesController extends Controller
 {
@@ -175,7 +176,7 @@ class ArticlesController extends Controller
         $this->validate($request, [
             "title" => "required",
             "body" => "required",
-            "cover_image" => "image|nullable"
+            "image" => "image|nullable"
         ]);
 
         if($request->hasFile("image")){
@@ -237,6 +238,68 @@ class ArticlesController extends Controller
             
         }
         //return redirect("/list")->with("success", "Article removed");
+        
+    }
+
+    public function ajaxUpdate(Request $request)
+    {
+        
+        if($request->ajax()){
+            
+            $article = Article::find($request->articleId);
+
+            $validator = \Validator::make($request->all(), [
+                "title" => "required",
+                "body" => "required",
+                /*'image' => 'image|nullable|max:1999'*/
+            ]);
+
+            if ($validator->passes()){
+                $hasImage = false;
+                //Handle file upload
+                if($request->hasFile("image")){
+                    $filenameWithExt = $request->file("image")->getClientOriginalName();
+                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension = $request->file("image")->getClientOriginalExtension();
+                    $fileNameToStore = $filename."_".time().".".$extension;
+                    $path = $request->file("image")->storeAs("public/images", $fileNameToStore);
+                }
+                else{
+                    $fileNameToStore = "noimage.jpg";
+                }
+                
+                $article->title = $request->input("title");
+                $article->body = $request->input("body");
+                //$article->user_id = auth()->user()->id;
+                $article->image = $fileNameToStore;
+                $article->save();
+
+                
+                $response = array(
+                    'status' => 'success',
+                    'msg' => "Hello!",
+                    "request" => $request->all(),
+                    "passesValidation" => true,
+                    "article" => $article,
+                    "hasImage" => $hasImage,
+                );
+
+                return response()->json($response);
+
+            }
+            else{
+
+                $response = array(
+                    'status' => 'success',
+                    'msg' => "Hello!",
+                    "request" => $request->all(),
+                    "passesValidation" => false,
+                );
+                return response()->json($response);
+
+            }
+            
+        }
         
     }
 }

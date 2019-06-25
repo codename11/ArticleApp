@@ -3,7 +3,7 @@
 @section("content")
     <h1>Update Article</h1> 
 
-    <form method="POST" action="/articles/{{$article->id}}">
+    <form method="POST" action="/articles/{{$article->id}}" enctype='multipart/form-data'>
         {{method_field("PUT")}}
         @csrf
 
@@ -17,6 +17,12 @@
             <textarea class="form-control" id="ckeditor" name="body" placeholder="Body" required>{{$article->body}}</textarea>
         </div>
         
+        <div class="form-group">
+            
+            <input type="file" name="image">
+        </div> 
+        <input name="old_image" type="hidden" value="{{$article->image}}">
+
         <!-- The Modal -->
         <div class="modal" id="myModal">
             <div class="modal-dialog">
