@@ -18,10 +18,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/list"> List Articles </a>
                         </li>
-                        <li class="nav-item"> 
-                            <a class="nav-link" href="/articles/create"> Create Article </a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/ajaksCreate"> Create Article </a>
                         </li>
-                        
                     @endif
                     @guest
                         <li class="nav-item">

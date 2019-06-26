@@ -49,3 +49,9 @@ Route::post('/deleteAjax/{id}','ArticlesController@ajaxDestroy');
 
 Route::post('/updateAjax/{id}','ArticlesController@ajaxUpdate');
 //End: Rute za Ajax update.
+
+//Begin: Rute za Ajax create.
+Route::get('/ajaksCreate', 'PagesController@CreateArticle');
+
+Route::post('/createAjax','ArticlesController@ajaxCreate');
+//End: Rute za Ajax create.

@@ -46,7 +46,13 @@ class PagesController extends Controller
 
     public function DeleteArticle($id)
     {
-        dd($id);
+        
         return view('articles.List Articles');
+    }
+
+    public function CreateArticle(){
+
+        return view('articles.Create Article');
+        
     }
 }

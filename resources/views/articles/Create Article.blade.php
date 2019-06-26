@@ -7,7 +7,7 @@
         $errTitle = $errors->has('title') ? 'border-danger' : '';
         $errBody = $errors->has('body') ? 'border-danger' : '';
     ?>
-    <form method="POST" action="/articles" enctype="multipart/form-data">
+    <form method="POST" id="createArticle" enctype="multipart/form-data">
         @csrf
         <!-- https://laravel.com/docs/5.7/validation#available-validation-rules -->
         <div class="form-group">
@@ -24,7 +24,7 @@
         </div>
 
         <div>
-            <button type="submit" class="btn btn-primary">Create Article</button>
+            <button type="submit" id="subCreate" class="btn btn-primary" onclick="ajaksCreate()">Create Article</button>
         </div>
     </form>
     

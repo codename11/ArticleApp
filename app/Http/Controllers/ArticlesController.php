@@ -33,17 +33,20 @@ class ArticlesController extends Controller
     }
 
     public function ajaxIndex(Request $request){
-        
+        //return $request->selected;
         if($request->ajax()){
-            $articles = Article::with('user')->paginate(1);
+            
+            $articles = intval($request->selected) ? Article::with('user')->where("user_id",intval($request->selected))->paginate(1) : Article::with('user')->paginate(1);
             /*Response koji se šalje sa servera ukoliko je uspešan response.*/
-
+            $users = User::all();
             $response = array(
                 'status' => 'success',
                 'msg' => "Hello!",
                 "articles" => $articles,
                 "request" => $request->all(),  
                 'pagination'=>(string) $articles->links(),
+                "users" => $users,
+                "selected" => intval($request->selected),
             );
             
             return response()->json($response);
@@ -247,7 +250,11 @@ class ArticlesController extends Controller
 
         if($request->ajax()){
             
-            $article = Article::find($request->articleId);
+            $article = Article::find($request->articleId);  
+            $allArticleIds = Article::pluck('id');
+            $user = User::find($article->user_id);
+            $prev = $article->prev($article);
+            $next = $article->next($article);
 
             $validator = \Validator::make($request->all(), [
                 "title" => "required",
@@ -280,8 +287,20 @@ class ArticlesController extends Controller
                     'msg' => "Hello!",
                     "request" => $request->all(),
                     "passesValidation" => true,
-                    "article" => $article,
+                    "article" => [
+                        "id" => $article->id,
+                        "title" => $article->title,
+                        "body" => $article->body,
+                        "image" => $article->image,
+                        "created_at" => $article->created_at->format('d. M, Y'),
+                        "updated_at" => $article->updated_at,
+                        "user_id" => $article->user_id,
+                    ],
                     "hasImage" => $hasImage,
+                    "prev" => $prev,
+                    "next" => $next,
+                    "allArticleIds" => $allArticleIds,
+                    "user" => $user,
                 );
 
                 return response()->json($response);
@@ -294,6 +313,7 @@ class ArticlesController extends Controller
                     'msg' => "Hello!",
                     "request" => $request->all(),
                     "passesValidation" => false,
+                    'errors' => $validator->getMessageBag()->toArray(),
                 );
                 return response()->json($response);
 
@@ -302,4 +322,84 @@ class ArticlesController extends Controller
         }
         
     }
+
+    public function ajaxCreate(Request $request)
+    {
+        //return $request->all();
+        if($request->ajax()){
+            
+            $article = new Article;
+            $article->title = $request->input("title");
+            $article->body = $request->input("body");
+            $article->user_id = auth()->user()->id;
+
+            $validator = \Validator::make($request->all(), [
+                "title" => "required",
+                "body" => "required",
+                'image' => 'image|nullable|max:1999'
+            ]);
+           
+            if ($validator->passes()){
+                $hasImage = false;
+                //Handle file upload
+                if($request->hasFile("image")){
+                    $filenameWithExt = $request->file("image")->getClientOriginalName();
+                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension = $request->file("image")->getClientOriginalExtension();
+                    $fileNameToStore = $filename."_".time().".".$extension;
+                    $path = $request->file("image")->storeAs("public/images", $fileNameToStore);
+                }
+                else{
+                    $fileNameToStore = "noimage.jpg";
+                }
+
+                $article->image = $fileNameToStore;
+                $article->save();
+                //return $article;
+                $allArticleIds = Article::pluck('id');
+                $user = auth()->user();
+                $prev = $article->prev($article);
+                $next = $article->next($article);
+
+                $response = array(
+                    'status' => 'success',
+                    'msg' => "Hello!",
+                    "request" => $request->all(),
+                    "passesValidation" => true,
+                    "article" => [
+                        "id" => $article->id,
+                        "title" => $article->title,
+                        "body" => $article->body,
+                        "image" => $article->image,
+                        "created_at" => $article->created_at->format('d. M, Y'),
+                        "updated_at" => $article->updated_at,
+                        "user_id" => $article->user_id,
+                    ],
+                    "hasImage" => $hasImage,
+                    "prev" => $prev,
+                    "next" => $next,
+                    "allArticleIds" => $allArticleIds,
+                    "user" => $user,
+                );
+
+                return response()->json($response);
+
+            }
+            else{
+
+                $response = array(
+                    'status' => 'success',
+                    'msg' => "Hello!",
+                    "request" => $request->all(),
+                    "passesValidation" => false,
+                    'errors' => $validator->getMessageBag()->toArray(),
+                );
+                return response()->json($response);
+
+            }
+            
+        }
+        
+    }
+
 }
