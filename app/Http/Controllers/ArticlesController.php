@@ -258,8 +258,7 @@ class ArticlesController extends Controller
 
             $validator = \Validator::make($request->all(), [
                 "title" => "required",
-                "body" => "required",
-                'image' => 'image|nullable|max:1999'
+                "body" => "required", 
             ]);
            
             if ($validator->passes()){
@@ -272,14 +271,19 @@ class ArticlesController extends Controller
                     $fileNameToStore = $filename."_".time().".".$extension;
                     $path = $request->file("image")->storeAs("public/images", $fileNameToStore);
                 }
-                else{
-                    $fileNameToStore = "noimage.jpg";
-                }
                 
                 $article->title = $request->input("title");
                 $article->body = $request->input("body");
-                //$article->user_id = auth()->user()->id;
-                $article->image = $fileNameToStore;
+                /*if($request->hasFile("image")){
+                    $article->image = $fileNameToStore;
+                }*/
+                if ($request->hasFile('image')) {
+                    if ($article->image != 'noimage.jpg') {
+                        Storage::delete('public/images'.$article->image);
+                    }
+                    $article->image = $fileNameToStore;
+                }
+ 
                 $article->save();
 
                 $response = array(
@@ -355,7 +359,7 @@ class ArticlesController extends Controller
 
                 $article->image = $fileNameToStore;
                 $article->save();
-                //return $article;
+                
                 $allArticleIds = Article::pluck('id');
                 $user = auth()->user();
                 $prev = $article->prev($article);

@@ -258,7 +258,7 @@ function ajaksCreate(){
     let createFormElements = {};
     createFormElements.title = createForm.elements[1].value;
     createFormElements.body = CKEDITOR.instances.ckeditor.getData();//Ovo trece po redu je id polja sa ckeditorom.
-    createFormElements.image = createForm.elements[3].files[0];
+    createFormElements.image = createForm.elements[3].files[0] ? createForm.elements[3].files[0] : "";
 
     var myformData = new FormData();        
     myformData.append('title', createFormElements.title);
@@ -300,7 +300,7 @@ function ajaksCreate(){
                     let textnode = document.createTextNode(response.errors[error]);
                     newItem.appendChild(textnode);
     
-                    messages.insertBefore(newItem, maine.childNodes[0]);
+                    messages.insertBefore(newItem, messages.childNodes[0]);
 
                 }
 

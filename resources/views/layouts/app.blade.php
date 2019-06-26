@@ -41,7 +41,7 @@
         
         @yield('content')
 
-        <div  id="maine">ggg</div>
+        <div  id="maine"></div>
 
         <?php
             $mytime = Carbon\Carbon::now();
