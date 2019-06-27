@@ -36,7 +36,7 @@ class ArticlesController extends Controller
         //return $request->selected;
         if($request->ajax()){
             
-            $articles = intval($request->selected) ? Article::with('user')->where("user_id",intval($request->selected))->paginate(1) : Article::with('user')->paginate(1);
+            $articles = intval($request->selected) ? Article::with('user')->where("user_id",intval($request->selected))->paginate(3) : Article::with('user')->paginate(3);
             /*Response koji se šalje sa servera ukoliko je uspešan response.*/
             $users = User::all();
             $response = array(
@@ -123,6 +123,7 @@ class ArticlesController extends Controller
             $article = Article::find($request->articleId);  
             $allArticleIds = Article::pluck('id');
             $user = User::find($article->user_id);
+            $currentUser = auth()->user();
             $prev = $article->prev($article);
             $next = $article->next($article);
             
@@ -145,6 +146,7 @@ class ArticlesController extends Controller
                 "request" => $request->all(),
                 "allArticleIds" => $allArticleIds,
                 "user" => $user,
+                "currentUser" => $currentUser,
             );
             
             return response()->json($response);

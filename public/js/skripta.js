@@ -104,8 +104,10 @@ function ajaksShow(){
                 }
            
                 html += body;
+                
+                let updateAndDelete = response.currentUser.id==response.user.id ? "<button id='update' class='btn btn-outline-info btn-sm float-left' data-toggle='modal' data-target='#myModalUpdate' onclick='getCkEditor()'>Update</button><button class='btn btn-outline-danger btn-sm float-right' data-toggle='modal' data-target='#myModalDelete'>Delete</button>" : "";
 
-                html += "<div class='comment-time excerpt-details' style='margin-bottom: 20px; font-size: 14px;'><a href='#gotoprofil'> "+response.user.name+" </a> - "+response.article.created_at+"</div><button id='update' class='btn btn-outline-info btn-sm float-left' data-toggle='modal' data-target='#myModalUpdate' onclick='getCkEditor()'>Update</button><button class='btn btn-outline-danger btn-sm float-right' data-toggle='modal' data-target='#myModalDelete'>Delete</button></div></div><br><hr style='color:whitesmoke; width: 50%;'><div id='single-body'><div id='single-content'>"+response.article.body+"</div></div>"+mymodalDelete+mymodalUpdate;
+                html += "<div class='comment-time excerpt-details' style='margin-bottom: 20px; font-size: 14px;'><a href='#gotoprofil'> "+response.user.name+" </a> - "+response.article.created_at+"</div>"+updateAndDelete+"</div></div><br><hr style='color:whitesmoke; width: 50%;'><div id='single-body'><div id='single-content'>"+response.article.body+"</div></div>"+mymodalDelete+mymodalUpdate;
                     
             if(document.getElementById("maine")){
                     
