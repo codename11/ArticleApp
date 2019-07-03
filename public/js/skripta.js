@@ -15,40 +15,60 @@ function ajaksIndex(page, selected){
             console.log(response);
             let body = "";
             let html = "<div class='container'>";
-            
             let select = "<label class='row' for='sel1' style='width: auto;'>Select specific user's articles:</label><select class='form-control row' style='width: auto;' id='sel1' name='sellist1'><option value='0'>All Users</option>";
-            for(let i=0;i<response.users.length;i++){
-                let ifSelected = (selected && selected==response.users[i].id) ? "selected" : "";
-                select += "<option value='"+response.users[i].id+"' "+ifSelected+">"+response.users[i].name+"</option>";
-            }
-            select += "</select><br>";
-
-            html += select;
-
-            let len = response.articles.data.length;
-            for(let i=0;i<len;i++){
-
-                html += "<div class='row' style='background-color: whitesmoke;'><div class='col-md-4 col-sm-4'><a href='/list/"+response.articles.data[i].id+"'><img class='postCover postCoverIndex' src='/storage/images/"+response.articles.data[i].image+"'></a></div><div class='col-md-8 col-sm-8'><br>";
             
-                if(response.articles.data[i].body.length > 400){
-                    body = response.articles.data[i].body.substring(0, 400)+"<a href='/list/"+response.articles.data[i].id+"'>...Read more</a>";
+            if(response){
+
+                if(response.users && response.users.length > 0){
+                    
+                    for(let i=0;i<response.users.length;i++){
+                        let ifSelected = (selected && selected==response.users[i].id) ? "selected" : "";
+                        select += "<option value='"+response.users[i].id+"' "+ifSelected+">"+response.users[i].name+"</option>";
+                    }
+                    select += "</select><br>";
+    
                 }
-                else{
-                    body = response.articles.data[i].body;
+
+                html += select;
+
+                if(response.articles){
+
+                    if(response.articles.data && response.articles.data.length > 0){
+
+                        let len = response.articles.data.length;
+                        for(let i=0;i<len;i++){
+    
+                            html += "<div class='row' style='background-color: whitesmoke;'><div class='col-md-4 col-sm-4'><a href='/list/"+response.articles.data[i].id+"'><img class='postCover postCoverIndex' src='/storage/images/"+response.articles.data[i].image+"'></a></div><div class='col-md-8 col-sm-8'><br>";
+                        
+                            if(response.articles.data[i].body.length > 400){
+                                body = response.articles.data[i].body.substring(0, 400)+"<a href='/list/"+response.articles.data[i].id+"'>...Read more</a>";
+                            }
+                            else{
+                                body = response.articles.data[i].body;
+                            }
+                            
+                            html += "<p>"+body+"</p>";
+                            html += "<small class='timestamp'>Written on "+response.articles.data[i].created_at+" by "+response.articles.data[i].user.name+"</small></div></div><hr class='hrStyle'>";
+                        }
+    
+                    }
+                    
+                    if(response.articles.last_page){
+    
+                        let pagination = "<div class='container'><ul class='pagination justify-content-center'><li class='page-item'><a class='page-link' href='#'>Previous</a></li>";
+                        for(let i=0;i<response.articles.last_page;i++){
+                            pagination += "<li class='page-item'><a class='page-link' href='#'>"+(i+1)+"</a></li>";
+                        }
+                        pagination += "<li class='page-item'><a class='page-link' href='#'>Next</a></li></ul></div>";
+        
+                    }
+    
+                    html += "</div>";
+
                 }
                 
-                html += "<p>"+body+"</p>";
-                html += "<small class='timestamp'>Written on "+response.articles.data[i].created_at+" by "+response.articles.data[i].user.name+"</small></div></div><hr class='hrStyle'>";
             }
 
-            let pagination = "<div class='container'><ul class='pagination justify-content-center'><li class='page-item'><a class='page-link' href='#'>Previous</a></li>";
-            for(let i=0;i<response.articles.last_page;i++){
-                pagination += "<li class='page-item'><a class='page-link' href='#'>"+(i+1)+"</a></li>";
-            }
-            pagination += "<li class='page-item'><a class='page-link' href='#'>Next</a></li></ul></div>";
-            
-            html += "</div>";
-            
             let maine = document.getElementById("maine");
             maine.innerHTML = "";
             if(maine){
@@ -96,10 +116,10 @@ function ajaksShow(){
             let imageUrl = "/storage/images/"+img;
             let html = "<a href='/list' class='btn btn-outline-info btn-sm'>Go Back</a><div class='nextPrev'><a href='/list/"+response.prev+"' class='btn btn-outline-success'><i class='fas fa-arrow-left'></i></a><a href='/list/"+response.next+"' class='btn btn-outline-info'><i class='fas fa-arrow-right'></i></a></div><br><br><div id='single-kv' style='background-image: url("+imageUrl+")"+imageStyle+";background-color: red !important;'></div><div id='single-intro'><div id='single-intro-wrap'><h1> "+response.article.title+"</h1>";
             
-                if(response.article.body.length > 400){
+                if(response && response.article && response.article.body && response.article.body.length > 400){
                     body = response.article.body.substring(0, 400)+"<a id='readMore' href='/list/"+response.article.id+"'>...Read more</a>";
                 }
-                else{
+                else if(response && response.article && response.article.body && response.article.body.length <= 400){
                     body = response.article.body;
                 }
            
@@ -211,10 +231,10 @@ function ajaksUpdate(){
             let imageUrl = "/storage/images/"+img;
             let html = "<a href='/list' class='btn btn-outline-info btn-sm'>Go Back</a><div class='nextPrev'><a href='/list/"+response.prev+"' class='btn btn-outline-success'><i class='fas fa-arrow-left'></i></a><a href='/list/"+response.next+"' class='btn btn-outline-info'><i class='fas fa-arrow-right'></i></a></div><br><br><div id='single-kv' style='background-image: url("+imageUrl+")"+imageStyle+";background-color: red !important;'></div><div id='single-intro'><div id='single-intro-wrap'><h1> "+response.article.title+"</h1>";
             
-                if(response.article.body.length > 400){
+                if(response && response.article && response.article.body && response.article.body.length > 400){
                     body = response.article.body.substring(0, 400)+"<a id='readMore' href='/list/"+response.article.id+"'>...Read more</a>";
                 }
-                else{
+                else if(response && response.article && response.article.body && response.article.body.length <= 400){
                     body = response.article.body;
                 }
            
