@@ -11125,3 +11125,7 @@ h1 {
   justify-content: center;
 }
 
+.pagination a {
+  margin-bottom: 5vh;
+}
+
