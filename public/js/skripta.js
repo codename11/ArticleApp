@@ -194,12 +194,6 @@ function ajaksUpdate(){
     myformData.append('image', updateFormElements.image);
     myformData.append('_token', token);
     myformData.append('articleId', articleId);
-    
-    /*console.log("******");
-    for (var [key, value] of myformData.entries()) { 
-        console.log(key, value);
-    }
-    console.log("======");*/
 
     $.ajax({
 
@@ -287,12 +281,6 @@ function ajaksCreate(){
     myformData.append('body', createFormElements.body);
     myformData.append('image', createFormElements.image);
     myformData.append('_token', token);
-
-    /*console.log("******");
-    for (var [key, value] of myformData.entries()) { 
-        console.log(key, value);
-    }
-    console.log("======");*/
 
     $.ajax({
 
