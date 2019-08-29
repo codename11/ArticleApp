@@ -40,7 +40,6 @@ class PagesController extends Controller
 
     public function ShowArticle($id)
     {
-        //dd($id);
         return view('articles.Single Article');
     }
 

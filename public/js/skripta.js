@@ -1,9 +1,6 @@
 function ajaksIndex(page, selected){
     let token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
     
-    console.log("hitIndex");
-    console.log(page);
-    
     $.ajax({
         url: '/indexAjax',
         type: 'POST',
@@ -13,6 +10,7 @@ function ajaksIndex(page, selected){
         success: (response) => { 
             console.log("success");
             console.log(response);
+
             let body = "";
             let html = "<div class='container'>";
             let select = "<label class='row' for='sel1' style='width: auto;'>Select specific user's articles:</label><select class='form-control row' style='width: auto;' id='sel1' name='sellist1'><option value='0'>All Users</option>";
@@ -86,12 +84,10 @@ function ajaksIndex(page, selected){
 
 function ajaksShow(){
     let token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-    console.log("hitShow");
     
     let urlId = window.location.href;
     let getaArticleId = urlId.lastIndexOf("/");
     let articleId = urlId.substring(getaArticleId+1, urlId.length);
-    console.log(articleId);
     
     $.ajax({
         url: '/showAjax',
@@ -101,6 +97,7 @@ function ajaksShow(){
         success: (response) => { 
             console.log("success");
             console.log(response);
+
             let body = "";
             let imageStyle = ";height: 435px; background-position: center top; background-attachment: fixed; background-repeat: no-repeat;background-size:cover;";
 
@@ -146,13 +143,11 @@ function ajaksShow(){
 
 function ajaksDelete(){
     let token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-    console.log("hitDel");
-    console.log(token);
 
     let urlId = window.location.href;
     let getaArticleId = urlId.lastIndexOf("/");
     let articleId = urlId.substring(getaArticleId+1, urlId.length);
-    console.log(articleId);
+
     $.ajax({
         url: '/deleteAjax/'+articleId,
         type: 'POST',
@@ -173,7 +168,6 @@ function ajaksDelete(){
 
 function ajaksUpdate(){
     let token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-    console.log("hitUpdate");
 
     let updateForm = document.getElementById("updateForm");
     
@@ -185,8 +179,6 @@ function ajaksUpdate(){
     updateFormElements.title = updateForm.elements[3].value;
     updateFormElements.body = CKEDITOR.instances.ckeditor.getData();//Ovo trece po redu je id polja sa ckeditorom.
     updateFormElements.image = updateForm.elements[5].files[0];
-    
-    let imginp = document.getElementById("imagex").files;
 
     var myformData = new FormData();        
     myformData.append('title', updateFormElements.title);
@@ -207,9 +199,8 @@ function ajaksUpdate(){
         processData: false,
         success: (response) => { 
             console.log("success");
-            console.log("+++++");
             console.log(response);
-            console.log("+++++");
+
             let body = "";
             let imageStyle = ";height: 435px; background-position: center top; background-attachment: fixed; background-repeat: no-repeat;background-size:cover;";
 
@@ -256,7 +247,6 @@ function ajaksUpdate(){
 function getCkEditor(){
     console.log("got ckeditor");
     CKEDITOR.replace("ckeditor")
-
 }
 
 $(document).ready(function(){
@@ -267,7 +257,6 @@ $(document).ready(function(){
 
 function ajaksCreate(){
     let token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-    console.log("hitCreate");
     
     let createForm = document.getElementById("createArticle");
     
